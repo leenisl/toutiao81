@@ -53,9 +53,6 @@ export default {
     }
   },
   methods: {
-    open () {
-      this.$message('登录信息有误!!')
-    },
     login () {
       this.$refs.form.validate((isok, res) => {
         if (isok) {
@@ -64,12 +61,9 @@ export default {
             url: '/authorizations',
             data: this.formData
           }).then(res => {
-            if (res.status === 201) {
-              localStorage.setItem('authorpass', JSON.stringify(res.data.data))
-              this.$router.push('/home')
-            }
-          }).catch(res => {
-            this.open()
+            // console.log(res)
+            localStorage.setItem('authorpass', JSON.stringify(res.data))
+            this.$router.push('/home')
           })
         }
       })
