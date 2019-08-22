@@ -7,7 +7,7 @@
    <el-header>
      <header-h></header-h>
    </el-header>
-   <el-main>
+   <el-main class="elmain">
      <router-view class="main"></router-view>
    </el-main>
  </el-container>
@@ -34,9 +34,14 @@ export default {
     }
 
   }
-  .main {
+  .elmain{
+    padding: 10px 10px;
+    .main {
     width: 100%;
     height: 100%;
+
   }
+  }
+
 }
 </style>

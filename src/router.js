@@ -20,7 +20,12 @@ export default new Router({
           component: homepage
         },
         {
-          path: ''
+          path: '/home/comment',
+          component: () => import('./views/common/comment.vue')
+        },
+        {
+          path: '/home/material',
+          component: () => import('./views/common/material.vue')
         }
       ]
     },

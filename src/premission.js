@@ -1,6 +1,6 @@
 import router from './router'
 router.beforeEach((to, from, next) => {
-  console.log(to)
+  // console.log(to)
   if (to.path.startsWith('/home')) {
     let userInfo = window.localStorage.getItem('authorpass')
     // console.log(userInfo)

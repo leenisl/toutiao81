@@ -1,6 +1,10 @@
 import axios from 'axios'
+import JSONBig from 'json-bigint'
 import { Message } from 'element-ui'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
+axios.defaults.transformResponse = [function (data) {
+  return data ? JSONBig.parse(data) : {}
+}]
 axios.interceptors.request.use((req) => {
   // console.log(req)
   let userInfo = window.localStorage.getItem('authorpass')
