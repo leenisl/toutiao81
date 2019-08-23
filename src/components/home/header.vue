@@ -4,9 +4,7 @@
       <i class="el-icon-s-fold"></i>
       <span>江苏传智播客教育科技股份有限公司</span>
     </el-col>
-    <el-col :span="3" class="head-right">
-      <span>消息</span>
-      <img :src="user.photo ? user.photo : defaultImg" alt />
+    <el-col :span="8" class="head-right">
       <el-dropdown trigger="click" class="user-info" @command="handleCommand">
         <span class="el-dropdown-link">
           {{user.name}}
@@ -18,6 +16,8 @@
           <el-dropdown-item command='c'>退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <img :src="user.photo ? user.photo : defaultImg" alt />
+       <span class="massage">消息</span>
     </el-col>
   </el-row>
 </template>
@@ -73,13 +73,18 @@ export default {
     }
   }
   .head-right{
-    display: flex;
-    align-items: center;
+    .massage{
+      float: right;
+    }
     img{
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin: 0 10px;
+    margin: 0 30px;
+    vertical-align: middle;
+    float: right;
+    position:relative;
+    top: 10px;
     }
     .user-info{
       float: right;

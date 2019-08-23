@@ -21,11 +21,19 @@ export default new Router({
         },
         {
           path: '/home/comment',
-          component: () => import('./views/common/comment.vue')
+          component: () => import('./views/comment')
         },
         {
           path: '/home/material',
-          component: () => import('./views/common/material.vue')
+          component: () => import('./views/material')
+        },
+        {
+          path: '/home/articles',
+          component: () => import('./views/articles')
+        },
+        {
+          path: '/home/publish',
+          component: () => import('./views/publish')
         }
       ]
     },

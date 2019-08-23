@@ -10,8 +10,8 @@ export default {
 
 <style>
 .homepage {
-  width: 100px;
-  height: 100vh;
+  width: 100%;
+  min-height: 91vh;
   background: url('../../assets/home.jpg') center no-repeat;
   background-size: cover
 }

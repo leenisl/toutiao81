@@ -3,7 +3,7 @@
  <el-aside class="aside-a">
    <aside-nav class="asidenav"></aside-nav>
  </el-aside>
- <el-container>
+ <el-container class="main-a">
    <el-header>
      <header-h></header-h>
    </el-header>
@@ -29,19 +29,24 @@ export default {
     width: 200px!important;
     height: 100vh;
     background: #323745;
+    position: fixed;
+    top: 0;
+    left: 0;
     .asidenav{
       width: 200px;
     }
 
   }
-  .elmain{
+  .main-a {
+    margin-left: 200px;
+    .elmain{
     padding: 10px 10px;
     .main {
     width: 100%;
     height: 100%;
 
+   }
+    }
   }
-  }
-
 }
 </style>

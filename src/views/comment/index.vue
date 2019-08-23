@@ -62,7 +62,6 @@ export default {
         page: this.pageData.currentPage,
         per_page: this.pageData.pageSizes
       }
-      console.log(page)
       this.$axios({
         url: '/articles',
         params: { response_type: 'comment', ...page }
