@@ -100,7 +100,6 @@ export default {
       this.getarticles()
     },
     refreshlist () {
-      // console.log(this.formData.daterange)
       this.page.currentpage = 1
       this.getarticles()
     },
