@@ -75,44 +75,37 @@ export default {
         this.formData.cover.images = []
       }
     },
-    getpublish (id) {
-      this.$axios({
+    async getpublish (id) {
+      let res = await this.$axios({
         url: `/articles/${id}`
-      }).then(res => {
-        console.log(res)
-        this.formData = res.data
       })
+      this.formData = res.data
     },
     publish (bol) {
-      this.$refs.form.validate(isok => {
+      this.$refs.form.validate(async isok => {
         if (isok) {
           let url = this.$route.params.publishId ? `/articles/${this.$route.params.publishId}` : '/articles'
           let method = this.$route.params.publishId ? 'put' : 'post'
-          this.$axios({
+          await this.$axios({
             url,
             method,
             params: { draft: bol },
             data: this.formData
-          }).then(res => {
-            this.$router.push('/home/articles')
           })
+          this.$router.push('/home/articles')
         }
       })
     },
-    getchannels () {
-      this.$axios({
+    async getchannels () {
+      let res = await this.$axios({
         url: '/channels'
-      }).then(res => {
-        this.channellist = res.data.channels
       })
+      this.channellist = res.data.channels
     }
   },
   created () {
     this.getchannels()
     this.$route.params.publishId && this.getpublish(this.$route.params.publishId)
-  },
-  mounted () {
-    console.log('触发组件')
   }
 }
 </script>

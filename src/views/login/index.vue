@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { login } from '../../api/login'
 export default {
   data () {
     var func = function (rules, value, callback) {
@@ -54,17 +55,11 @@ export default {
   },
   methods: {
     login () {
-      this.$refs.form.validate((isok, res) => {
+      this.$refs.form.validate(async (isok, res) => {
         if (isok) {
-          this.$axios({
-            method: 'post',
-            url: '/authorizations',
-            data: this.formData
-          }).then(res => {
-            // console.log(res)
-            localStorage.setItem('authorpass', JSON.stringify(res.data))
-            this.$router.push('/home')
-          })
+          let res = await login(this.formData)
+          localStorage.setItem('authorpass', JSON.stringify(res.data))
+          this.$router.push('/home')
         }
       })
     }
