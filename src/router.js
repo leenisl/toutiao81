@@ -3,10 +3,15 @@ import Router from 'vue-router'
 import Home from './views/home'
 import login from './views/login'
 import homepage from './components/home/homepage.vue'
+import h404 from './components/common/404.vue'
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '*',
+      component: h404
+    },
     {
       path: '/',
       redirect: '/login'
@@ -34,6 +39,18 @@ export default new Router({
         {
           path: '/home/publish',
           component: () => import('./views/publish')
+        },
+        {
+          path: '/home/publish/:publishId',
+          component: () => import('./views/publish')
+        },
+        {
+          path: '/home/account',
+          component: () => import('./views/account')
+        },
+        {
+          path: '/home/fansData',
+          component: () => import('./views/fans')
         }
       ]
     },

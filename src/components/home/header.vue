@@ -1,7 +1,7 @@
 <template>
   <el-row class="header" type="flex" justify="space-between">
     <el-col :span="16" class="head-left">
-      <i class="el-icon-s-fold"></i>
+      <i :class="open ? 'el-icon-s-unfold': 'el-icon-s-fold'" @click="fun"></i>
       <span>江苏传智播客教育科技股份有限公司</span>
     </el-col>
     <el-col :span="8" class="head-right">
@@ -23,16 +23,20 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
-      user: {
-
-      },
-      defaultImg: require('../../assets/avatar.jpg') // 图片变成base64
+      user: {},
+      defaultImg: require('../../assets/avatar.jpg'), // 图片变成base64
+      open: false
     }
   },
   methods: {
+    fun () {
+      this.open = !this.open
+      eventBus.$emit('open', this.open)
+    },
     getUser () {
       this.$axios({
         url: '/user/profile'
@@ -55,6 +59,9 @@ export default {
   },
   created () {
     this.getUser()
+    eventBus.$on('cutImg', () => {
+      this.getUser()
+    })
   }
 
 }

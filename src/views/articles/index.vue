@@ -52,7 +52,7 @@
           </div>
         </div>
         <div class="right">
-          <el-link type="danger" :underline="false"><i class="el-icon-edit" >修改</i></el-link>
+          <el-link type="danger" :underline="false" @click='toEdit(item)'><i class="el-icon-edit" >修改</i></el-link>
           <el-link target="_blank" @click="delarticles(item.id)" :underline="false" :disabled='item.status === 2 ? true : false '><i class="el-icon-delete">删除</i></el-link>
         </div>
       </div>
@@ -83,6 +83,9 @@ export default {
     }
   },
   methods: {
+    toEdit (item) {
+      this.$router.push(`/home/publish/${item.id.toString()}`)
+    },
     delarticles (id) {
       console.log(id.toString())
       this.$confirm('您确定要删除该条信息吗?', '提示').then(() => {

@@ -1,7 +1,7 @@
 <template>
-  <div class="aside">
+  <div class="aside" :style="{width: open ? '64px' : '200px'}">
     <div class="aside-user">
-     <img src="../../assets/logo_admin.png" alt="">
+     <img :src="open? sImg:dImg" :style="{width: open ? '32px' : ''}" alt="">
    </div>
    <el-menu
       class="a-menu"
@@ -9,6 +9,8 @@
       text-color="#fff"
       active-text-color="#ffd04b"
       router
+      :collapse='open'
+      :collapse-transition='false'
       >
       <el-menu-item index="/home">
         <i class="el-icon-s-home"></i>
@@ -43,8 +45,26 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
-
+  data () {
+    return {
+      open: false,
+      dImg: require('../../assets/logo_admin.png'),
+      sImg: require('../../assets/toutiao.png')
+    }
+  },
+  methods: {
+    togo () {
+      console.log(123)
+      eventBus.$emit('init')
+    }
+  },
+  created () {
+    eventBus.$on('open', (open) => {
+      this.open = open
+    })
+  }
 }
 </script>
 

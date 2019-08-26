@@ -1,64 +1,67 @@
 <template>
-  <el-card v-loading="loading" class="maincard">
+  <el-card v-loading='loading'>
     <bread-crumb slot="header">
-      <template slot="title">图片管理</template>
-
+      <template slot="title">素材管理</template>
     </bread-crumb>
-    <el-upload
-        class="upload"
-        action=""
-        :multiple='false'
-        :show-file-list='false'
-        :http-request='upload'
-      >
-      <el-button type="primary">上传图片</el-button>
-        <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
-      </el-upload>
-    <el-tabs class="tab" v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane class="tabtil" label=" 全部图片 " name="false">
-        <div class="img-list">
-          <el-card class="card" v-for="item in Imglist" :key="item.id">
-            <img :src="item.url" alt />
-            <el-row class="icon" type="flex" justify="space-around" align="middle">
-              <i
-                @click="collectImg(item)"
-                class="el-icon-star-on icon-left"
-                :style="{color: item.is_collected ? 'red' : ''}"
-              ></i>
-              <i @click="delMaterial(item)" class="el-icon-delete-solid"></i>
-            </el-row>
-          </el-card>
-        </div>
-        <el-row style="margin-top: 15px;" type="flex" justify="center">
+    <el-upload class="upload-demo" action :show-file-list='false' :http-request='upload'>
+      <el-button size="small" type="primary">点击上传</el-button>
+    </el-upload>
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="全部素材" name="false">
+        <el-row>
+          <el-col :span="3" v-for="(item, index) in imglist" :key="index" style="margin: 14px">
+            <el-card :body-style="{ padding: '0px'}">
+              <img :src="item.url" class="image" />
+              <div style="padding: 14px;">
+                <el-row type="flex" justify="space-around" style="font-size: 22px">
+                  <i
+                    class="el-icon-star-on"
+                    :style="{color: item.is_collected ? 'red' : ''}"
+                    @click="collectImg(item)"
+                  ></i>
+                  <i class="el-icon-delete" @click="delImg(item.id)"></i>
+                </el-row>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+        <el-row type="flex" justify="center" style="margin-top:25px;margin-bottom: 5px">
           <el-pagination
-            @current-change="changeCurrent"
+            @current-change="changepage"
             background
             layout="prev, pager, next"
             :total="page.total"
             :current-page="page.currentpage"
-            :page-size="page.pageSizes"
+            :page-size="page.pagesize"
           ></el-pagination>
         </el-row>
       </el-tab-pane>
-      <el-tab-pane class="tabtil" label=" 收藏图片 " name="true">
-        <div class="img-list">
-          <el-card class="card" v-for="item in Imglist" :key="item.id">
-            <img :src="item.url" alt />
-            <el-row class="icon" type="flex" justify="space-around" align="middle">
-              <!-- <i class="el-icon-star-on icon-left"></i>
-              <i  class="el-icon-delete-solid"></i>-->
-            </el-row>
-          </el-card>
-        </div>
-        <el-row style="margin-top: 15px;" type="flex" justify="center">
+      <el-tab-pane label="收藏管理" name="true">
+        <el-row>
+          <el-col :span="3" v-for="(item, index) in imglist" :key="index" style="margin: 14px">
+            <el-card :body-style="{ padding: '0px'}">
+              <img :src="item.url" class="image" />
+              <div style="padding: 14px;">
+                <el-row type="flex" justify="space-around" style="font-size: 22px">
+                  <i
+                    class="el-icon-star-on"
+                    :style="{color: item.is_collected ? 'red' : ''}"
+                    @click="collectImg(item)"
+                  ></i>
+                  <i class="el-icon-delete" @click="delImg(item.id)"></i>
+                </el-row>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+        <el-row type="flex" justify="center" style="margin-top:25px;margin-bottom: 5px">
           <el-pagination
-            @current-change="changeCurrent"
+            @current-change="changepage"
             background
             layout="prev, pager, next"
             :total="page.total"
             :current-page="page.currentpage"
-            :page-size="page.pageSizes"
+            :page-size="page.pagesize"
           ></el-pagination>
         </el-row>
       </el-tab-pane>
@@ -70,15 +73,14 @@
 export default {
   data () {
     return {
-      Imglist: [],
-      page: {
-        total: 0,
-        currentpage: 1,
-        pageSizes: 10
-      },
       activeName: 'false',
-      loading: false,
-      collect: ''
+      imglist: [],
+      page: {
+        currentpage: 1,
+        pagesize: 21,
+        total: 0
+      },
+      loading: false
     }
   },
   methods: {
@@ -90,99 +92,77 @@ export default {
         url: '/user/images',
         data: formData
       }).then(res => {
-        this.getMaterial()
         this.$message({
           message: '上传成功',
           type: 'success'
         })
+        this.getmaterial()
       })
     },
     collectImg (item) {
-      this.collect = item.is_collected
+      console.log(item)
       this.$axios({
         method: 'put',
-        url: `user/images/${item.id}`,
-        data: { collect: !this.collect }
+        url: `/user/images/${item.id}`,
+        data: { collect: !item.is_collected }
       }).then(res => {
-        this.getMaterial()
+        this.$message({
+          message: item.is_collected ? '已取消收藏!!' : '收藏成功!!',
+          type: 'success'
+        })
+        this.getmaterial()
       })
     },
-    delMaterial (item) {
-      this.$confirm('您确定要删除该条图片?', '提示').then(() => {
+    delImg (id) {
+      this.$confirm('您确定要删除该图片吗?', '提示').then(() => {
         this.$axios({
           method: 'delete',
-          url: `/user/images/${item.id}`
+          url: `/user/images/${id}`
         }).then(res => {
-          this.getMaterial()
+          this.getmaterial()
         })
       })
     },
-    handleClick (tab, event) {
+    changepage (page) {
+      this.page.currentpage = page
+      this.getmaterial()
+    },
+    handleClick (tab) {
       this.activeName = tab.name
       this.page.currentpage = 1
-      this.getMaterial()
+      this.getmaterial()
     },
-    changeCurrent (page) {
-      this.page.currentpage = page
-      this.getMaterial()
-    },
-    getMaterial () {
+    getmaterial () {
       this.loading = true
-      let obj = {
-        per_page: this.page.pageSizes,
-        page: this.page.currentpage
-      }
       this.$axios({
-        method: 'get',
         url: '/user/images',
-        params: { collect: this.activeName, ...obj }
+        params: {
+          collect: this.activeName,
+          page: this.page.currentpage,
+          per_page: this.page.pagesize
+        }
       }).then(res => {
-        this.Imglist = res.data.results
+        this.imglist = res.data.results
         this.page.total = res.data.total_count
         this.loading = false
       })
     }
   },
   created () {
-    this.getMaterial()
+    this.getmaterial()
   }
 }
 </script>
 
-<style lang='less' scoped>
-.maincard {
-  position: relative;
-  .upload {
+<style lang='less'>
+.image {
+  width: 100%;
+  height: 190px;
+  display: block;
+}
+.upload-demo{
   position: absolute;
-  right: 30px;
-  top: 60px;
+  left: 93%;
   z-index: 1;
-}
-}
-
-.img-list {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  .card {
-    width: 250px;
-    height: 300px;
-    margin: 15px 20px;
-    position: relative;
-    img {
-      width: 100%;
-      height: 70%;
-    }
-    .icon {
-      position: absolute;
-      bottom: 20px;
-      left: 0;
-      width: 100%;
-      font-size: 22px;
-      .icon-left {
-        font-size: 26px;
-      }
-    }
-  }
 }
 </style>
